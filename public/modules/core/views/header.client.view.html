@@ -16,9 +16,27 @@
 		                    <b class="caret"></b>
 		                </a>
 		                <ul ng-switch-when="dropdown" class="dropdown-menu"> 
-		                    <li data-ng-repeat="subitem in item.subitems">
-		                        <a href="/#!/{{subitem.link}}">{{subitem.title}}</a>
-		                    </li>                
+		                    <li data-ng-repeat="subitem in item.subitems" data-ng-if="subitem.shouldRender(authentication.user);" ng-switch="subitem.class" class="{{subitem.class}}" ui-route="{{subitem.uiRoute}}" ng-class="{active: $uiRoute}">
+		                        <a ng-switch-when="dropdown-submenu" href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                            {{subitem.title}}
+		                        </a>
+		                        <ul ng-switch-when="dropdown-submenu" class="dropdown-menu"> 
+		                            <li data-ng-repeat="subSubitem in subitem.subitems" data-ng-if="subSubitem.shouldRender(authentication.user);" ng-switch="subSubitem.class" class="{{subSubitem.class}}" ui-route="{{subSubitem.uiRoute}}" ng-class="{active: $uiRoute}">
+		                                <a ng-switch-when="dropdown-submenu" href="#" class="dropdown-toggle" data-toggle="dropdown">
+		                                    {{subSubitem.title}}
+		                                </a>
+		                                <ul ng-switch-when="dropdown-submenu" class="dropdown-menu"> 
+		                                    <li data-ng-repeat="subSubSubitem in subSubitem.subitems" data-ng-if="subSubSubitem.shouldRender(authentication.user);" ng-switch="subSubSubitem.class" class="{{subSubSubitem.class}}" ui-route="{{subSubSubitem.uiRoute}}" ng-class="{active: $uiRoute}">
+		                                        <a href="/#!/{{subSubSubitem.link}}">{{subSubSubitem.title}}</a>
+		                                    </li>                
+		                                </ul>
+		                                
+		                                <a ng-switch-default href="/#!/{{subSubitem.link}}">{{subSubitem.title}}</a>
+		                            </li>                
+		                        </ul>
+		                        
+		                        <a ng-switch-default href="/#!/{{subitem.link}}">{{subitem.title}}</a>
+		                    </li>                     
 		                </ul>
 		                
 		                <a ng-switch-default href="/#!/{{item.link}}">{{item.title}}</a>
